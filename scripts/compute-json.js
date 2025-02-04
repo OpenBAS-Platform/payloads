@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const inputDir = './atomic-testings';
-const outputFile = './merged.json';
+const outputFile = './indexes/merged.json';
 
 function aggregateJsonFilesPath(dirPath) {
   let filesList = [];
