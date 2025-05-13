@@ -23,18 +23,22 @@ Customized to reflect specific use cases
   - You can import scenario on your OpenBAS platform
     
 ![scenario-import](./scenarios/assets/scenario-import.png)
-
 ## 🧪 Current Scenarios
-Scenario Name	Description
-Akira Ransomware	Simulates techniques used by Akira actors. credit to https://github.com/skandler/simulate-akira
-DragonForce Ransomware	Emulates ransomware tactics from DragonForce. credit to https://github.com/marcopedrinazzi/simulate-dragonforce-ransomware
- 
+
+| Scenario Name           | Description                                         |
+|-------------------------|-----------------------------------------------------|
+| Akira Ransomware        | Simulates techniques used by Akira actors          |
+| DragonForce Ransomware  | Emulates ransomware tactics from DragonForce        |
+
+
 ## 🤝 Contributing
 
 We welcome contributions from the community!
 To add your own scenario:
-  - Create a valid OpenBAS scenario file in .json format.
-  - Add it to the scenarios/ folder.
+  - Create a valid OpenBAS scenario
+  - Export it with the "Export Scenario" button
+  - Extract the Zip file generated
+  - Add the JSON file from the ZIP to the scenarios/ folder.
   - Submit a pull request with a clear description.
   - Please follow naming conventions and provide meaningful metadata within your scenarios.
 
