@@ -24,12 +24,11 @@ Customized to reflect specific use cases
     
 ![scenario-import](./scenarios/assets/scenario-import.png)
 ## 🧪 Current Scenarios
-
+### Current Scenarios
 | Scenario Name           | Description                                         |
 |-------------------------|-----------------------------------------------------|
-| Akira Ransomware        | Simulates techniques used by Akira actors          |
-| DragonForce Ransomware  | Emulates ransomware tactics from DragonForce        |
-
+| Akira Ransomware        | Simulates techniques used by Akira actors. Credit to **skandler** [GitHub Repository](https://github.com/skandler/simulate-akira) |
+| DragonForce Ransomware  | Emulates ransomware tactics from DragonForce. Credit to **marcopedrinazzi** [GitHub Repository](https://github.com/marcopedrinazzi/simulate-dragonforce-ransomware) |
 
 ## 🤝 Contributing
 
