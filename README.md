@@ -8,8 +8,8 @@ This repository hosts curated scenarios for the OpenBAS platform, contributed by
 ```All scenario files are located directly in the scenarios/ folder and are ready for import into OpenBAS.
 .
 ├── scenarios/
-│   ├── Akira Ransomware.json
-│   └── DragonForce Ransomware.json
+│   ├── Akira Ransomware.zip
+│   └── DragonForce Ransomware.zip
 ```
 Downloaded individually
 Imported directly into the OpenBAS interface
@@ -18,8 +18,8 @@ Customized to reflect specific use cases
 
   - Navigate to the scenarios/ folder.
   - Download the scenario file(s) you want.
-  - In your OpenBAS platform, go to Scenarios > Import button.
-  - Upload the JSON file to begin using the scenario.
+  - In your OpenBAS platform, go to Scenarios > Import button (top right corner).
+  - Upload the ZIP file to begin using the scenario.
   - You can import scenario on your OpenBAS platform
     
 ![scenario-import](./scenarios/assets/scenario-import.png)
@@ -35,11 +35,12 @@ Customized to reflect specific use cases
 We welcome contributions from the community!
 To add your own scenario:
   - Create a valid OpenBAS scenario
-  - Export it with the "Export Scenario" button
-  - Extract the Zip file generated
-  - Add the JSON file from the ZIP to the scenarios/ folder.
+  - Export it with the "Export Scenario" button (top right corner)
+  - Add the downloaded Zip file to the scenarios/ folder.
   - Submit a pull request with a clear description.
   - Please follow naming conventions and provide meaningful metadata within your scenarios.
+
+Please mind about keeping personal data out of exports!
 
 ## 📬 Contact & Community
 Questions, feedback, or want to discuss scenario design?
