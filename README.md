@@ -9,6 +9,7 @@ This repository hosts curated scenarios for the OpenBAS platform, contributed by
 .
 ├── scenarios/
 │   ├── Akira Ransomware.zip
+│   ├── Deploy OpenBAS Agents Like an Adversary and Validate Your Security Posture.zip
 │   └── DragonForce Ransomware.zip
 ```
 Downloaded individually
@@ -29,6 +30,8 @@ Customized to reflect specific use cases
 |-------------------------|-----------------------------------------------------|
 | Akira Ransomware        | Simulates techniques used by Akira actors. Credit to **skandler** [GitHub Repository](https://github.com/skandler/simulate-akira) |
 | DragonForce Ransomware  | Emulates ransomware tactics from DragonForce. Credit to **marcopedrinazzi** [GitHub Repository](https://github.com/marcopedrinazzi/simulate-dragonforce-ransomware) |
+| Deploy OpenBAS Agents.. | Simulates techniques used by bad guys to deploy C2 beacons through SMB thanks our new installation-mode of OpenBAS agents introduce in 1.14.0. Credit to **Seb-MIGUEL** [GitHub Repository](https://github.com/Seb-MIGUEL) |
+
 
 ## 🤝 Contributing
 
