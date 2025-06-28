@@ -14,14 +14,11 @@
   "payload_elevation_required": true,
   "payload_arguments": [],
   "payload_prerequisites": [],
-  "payload_external_id": null,
-  "payload_source": "MANUAL",
-  "payload_status": "UNVERIFIED",
+  "payload_source": "FILIGRAN",
+  "payload_status": "VERIFIED",
   "payload_execution_arch": "ALL_ARCHITECTURES",
-  "payload_collector": null,
   "payload_tags": [],
   "payload_output_parsers": [],
   "command_executor": "cmd",
-  "command_content": "REG ADD HKCU\\Software\\Classes\\CLSID\\{fdb00e52-a214-4aa1-8fba-4357bb0072ec}\\InProcServer32 /ve /t REG_SZ /d C:\\IDontExist.dll /f",
-  "payload_collector_type": null
+  "command_content": "REG ADD HKCU\\Software\\Classes\\CLSID\\{fdb00e52-a214-4aa1-8fba-4357bb0072ec}\\InProcServer32 /ve /t REG_SZ /d C:\\IDontExist.dll /f"
 }

@@ -12,18 +12,36 @@ def find_json_files(root_dir, ignore_path):
                 json_files.append(file_path)
     return json_files
 
-def load_json(file_path):
-    with open(file_path, 'r', encoding='utf-8') as f:
-        try:
-            return json.load(f)
-        except Exception as e:
-            print(f"Error loading {file_path}: {e}")
-            return None
+def fix_and_load_json(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        changed = False
+        # Set required values
+        if data.get('payload_source') != 'FILIGRAN':
+            data['payload_source'] = 'FILIGRAN'
+            changed = True
+        if data.get('payload_status') != 'VERIFIED':
+            data['payload_status'] = 'VERIFIED'
+            changed = True
+        # Remove unwanted keys
+        for key in ['payload_external_id', 'payload_collector_type', 'payload_collector']:
+            if key in data:
+                del data[key]
+                changed = True
+        # Overwrite file if changes were made
+        if changed:
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(data, f, indent=2, ensure_ascii=False)
+        return data
+    except Exception as e:
+        print(f"Error loading {file_path}: {e}")
+        return None
 
 def merge_json_files(json_files):
     merged = []
     for file in json_files:
-        data = load_json(file)
+        data = fix_and_load_json(file)
         if data is None:
             continue
         if isinstance(data, list):
