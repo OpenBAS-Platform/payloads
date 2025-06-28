@@ -17,6 +17,7 @@ def fix_and_load_json(file_path):
         with open(file_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
         changed = False
+
         # Set required values
         if data.get('payload_source') != 'FILIGRAN':
             data['payload_source'] = 'FILIGRAN'
@@ -24,11 +25,23 @@ def fix_and_load_json(file_path):
         if data.get('payload_status') != 'VERIFIED':
             data['payload_status'] = 'VERIFIED'
             changed = True
+
+        # Handle payload_external_id and payload_id
+        if 'payload_id' in data:
+            # Set payload_external_id to payload_id value (even if payload_external_id did not exist)
+            if data.get('payload_external_id') != data['payload_id']:
+                data['payload_external_id'] = data['payload_id']
+                changed = True
+            # Remove payload_id
+            del data['payload_id']
+            changed = True
+
         # Remove unwanted keys
-        for key in ['payload_external_id', 'payload_collector_type', 'payload_collector']:
+        for key in ['payload_collector_type', 'payload_collector']:
             if key in data:
                 del data[key]
                 changed = True
+
         # Overwrite file if changes were made
         if changed:
             with open(file_path, 'w', encoding='utf-8') as f:
