@@ -1,26 +1,35 @@
 [
   {
-    "payload_type": "Command",
+    "payload_external_id": "ac0de8fe-a821-499c-ba22-591bbe84b06f",
     "payload_name": "AMSI Bypass - Override AMSI via COM",
     "payload_description": "With administrative rights, an adversary can disable AMSI via registry value in HKCU\\Software\\Classes\\CLSID\\{fdb00e52-a214-4aa1-8fba-4357bb0072ec} by overriding the Microsoft Defender COM object for AMSI and points it to a DLL that does not exist.\nThis is currently being used by AsyncRAT and others. \nhttps://strontic.github.io/xcyclopedia/library/clsid_fdb00e52-a214-4aa1-8fba-4357bb0072ec.html\nhttps://securitynews.sonicwall.com/xmlpost/asyncrat-variant-includes-cryptostealer-capabilites/\n",
     "payload_platforms": [
       "Windows"
     ],
     "payload_attack_patterns": [
-      "T1562.001"
+      {
+        "attack_pattern_external_id": "T1562.001",
+        "attack_pattern_name": "Disable or Modify Tools"
+      }
     ],
-    "payload_cleanup_executor": "cmd",
-    "payload_cleanup_command": "REG DELETE HKCU\\Software\\Classes\\CLSID\\{fdb00e52-a214-4aa1-8fba-4357bb0072ec}\\InProcServer32 /f",
-    "payload_elevation_required": true,
-    "payload_arguments": [],
-    "payload_prerequisites": [],
-    "payload_source": "FILIGRAN",
-    "payload_status": "VERIFIED",
-    "payload_execution_arch": "ALL_ARCHITECTURES",
-    "payload_tags": [],
-    "payload_output_parsers": [],
-    "command_executor": "cmd",
-    "command_content": "REG ADD HKCU\\Software\\Classes\\CLSID\\{fdb00e52-a214-4aa1-8fba-4357bb0072ec}\\InProcServer32 /ve /t REG_SZ /d C:\\IDontExist.dll /f",
-    "payload_external_id": "0424faba-01a7-477a-87d8-bae234acd91d"
+    "payload_tags": []
+  },
+  {
+    "payload_external_id": "f9cfd1fd-b85a-46a2-bcf2-4c5708161cb2",
+    "payload_name": "Drop RedLine Stealer",
+    "payload_description": "",
+    "payload_platforms": [
+      "Windows"
+    ],
+    "payload_attack_patterns": [
+      {
+        "attack_pattern_external_id": "T1217",
+        "attack_pattern_name": "Browser Information Discovery"
+      }
+    ],
+    "payload_tags": [
+      "malware",
+      "stealer"
+    ]
   }
 ]
