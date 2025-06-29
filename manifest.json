@@ -67,7 +67,7 @@
       "payload_elevation_required": false,
       "payload_arguments": [],
       "payload_prerequisites": [],
-      "payload_external_id": "f9cfd1fd-b85a-46a2-bcf2-4c5708161cb2",
+      "payload_external_id": "ea12de8c-6ddb-41fe-8ef3-ab0588d4ec62",
       "payload_source": "FILIGRAN",
       "payload_status": "VERIFIED",
       "payload_execution_arch": "ALL_ARCHITECTURES",
@@ -75,8 +75,8 @@
         "ca426800-9452-470a-a799-19e9ca64d9a5",
         "9698ff4f-84be-4ecf-ad28-a2d949a2ad2a"
       ],
-      "payload_created_at": "2025-06-28T08:40:56.479534Z",
-      "payload_updated_at": "2025-06-28T08:40:56.479534Z",
+      "payload_created_at": "2025-06-29T07:45:54.495831Z",
+      "payload_updated_at": "2025-06-29T07:45:54.495831Z",
       "payload_output_parsers": [],
       "file_drop_file": "f6919c8d-a5d8-424d-bc7e-b0519d169b2f"
     },
@@ -90,6 +90,11 @@
         "tag_id": "9698ff4f-84be-4ecf-ad28-a2d949a2ad2a",
         "tag_name": "stealer",
         "tag_color": "#361070"
+      },
+      {
+        "tag_id": "ca426800-9452-470a-a799-19e9ca64d9a5",
+        "tag_name": "malware",
+        "tag_color": "#cf1111"
       }
     ],
     "payload_attack_patterns": [
@@ -106,7 +111,9 @@
       "document_name": "d10865bd6526c7578c27e6c1d76fd3c6feb3b11fff8e0d0a3b41090a525b8bc1.exe",
       "document_target": "dd1853bf4e3943a02cc0efd8b53baa44.exe",
       "document_description": null,
-      "document_tags": [],
+      "document_tags": [
+        "ca426800-9452-470a-a799-19e9ca64d9a5"
+      ],
       "document_path": "malware/stealer/windows/Drop RedLine Stealer/attachments.zip"
     }
   }
