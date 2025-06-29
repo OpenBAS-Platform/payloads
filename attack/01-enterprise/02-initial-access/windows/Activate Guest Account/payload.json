@@ -17,7 +17,7 @@
       }
     ],
     "payload_cleanup_executor": "cmd",
-    "payload_cleanup_command": "net user #{guest_user} /active:no",
+    "payload_cleanup_command": "net user #{guest_user} /active:no\n",
     "payload_elevation_required": true,
     "payload_arguments": [
       {
@@ -29,7 +29,7 @@
       }
     ],
     "payload_prerequisites": [],
-    "payload_external_id": null,
+    "payload_external_id": "8b8ecda8-7cfd-4b3e-9f22-f052c8119106",
     "payload_source": "FILIGRAN",
     "payload_status": "VERIFIED",
     "payload_execution_arch": "ALL_ARCHITECTURES",
@@ -38,7 +38,7 @@
     "payload_updated_at": "2025-06-29T12:34:33.717173Z",
     "payload_output_parsers": [],
     "command_executor": "cmd",
-    "command_content": "net user #{guest_user} /active:yes"
+    "command_content": "net user #{guest_user} /active:yes\n"
   },
   "payload_tags": [],
   "payload_attack_patterns": [

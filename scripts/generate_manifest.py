@@ -31,8 +31,9 @@ def fix_and_load_json(file_path, parent_dir):
                 changed = True
 
             # Handle payload_external_id and payload_id
-            if "payload_external_id" not in info:
+            if "payload_external_id" not in info or info["payload_external_id"] is None:
                 info["payload_external_id"] = info["payload_id"]
+                changed = True
 
             # Remove unwanted keys
             for key in ["payload_collector_type", "payload_collector", "payload_id"]:
