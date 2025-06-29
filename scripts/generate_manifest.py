@@ -1,17 +1,22 @@
 import os
 import json
-import zipfile
 
-def ensure_generated_dir(root_dir):
-    gen_dir = os.path.join(root_dir, "_generated")
-    os.makedirs(gen_dir, exist_ok=True)
-    return gen_dir
+def find_json_files(root_dir, ignore_path):
+    json_files = []
+    for root, dirs, files in os.walk(root_dir):
+        for file in files:
+            if file.lower().endswith('.json'):
+                file_path = os.path.abspath(os.path.join(root, file))
+                if os.path.abspath(ignore_path) == file_path:
+                    continue
+                json_files.append(file_path)
+    return json_files
 
-def fix_and_load_json(file_path):
-    changed = False
+def fix_and_load_json(file_path, parent_dir):
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
+        changed = False
 
         info = data.get("payload_information", None)
         if info and isinstance(info, dict):
@@ -37,6 +42,18 @@ def fix_and_load_json(file_path):
                     del info[key]
                     changed = True
 
+        # Handle document_path in payload_document if attachments.zip exists
+        payload_doc = data.get("payload_document")
+        if payload_doc is not None and isinstance(payload_doc, dict):
+            dir_path = os.path.dirname(file_path)
+            attachment_path = os.path.join(dir_path, "attachments.zip")
+            if os.path.isfile(attachment_path):
+                # Compute relative path from parent_dir and make URL-compatible
+                rel_path = os.path.relpath(attachment_path, parent_dir).replace(os.sep, '/')
+                if payload_doc.get('document_path') != rel_path:
+                    payload_doc['document_path'] = rel_path
+                    changed = True
+
         if changed:
             with open(file_path, 'w', encoding='utf-8') as f:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -45,109 +62,26 @@ def fix_and_load_json(file_path):
         print(f"Error loading {file_path}: {e}")
         return None
 
-def find_payload_jsons(root_dir):
-    payloads = []
-    for folder, dirs, files in os.walk(root_dir):
-        if "payload.json" in files:
-            payload_json_path = os.path.join(folder, "payload.json")
-            attachments_path = os.path.join(folder, "attachments.zip")
-            has_attachments = os.path.isfile(attachments_path)
-            payloads.append({
-                "payload_json": payload_json_path,
-                "attachments": attachments_path if has_attachments else None,
-                "dir": folder,
-                "dir_name": os.path.basename(folder)
-            })
-    return payloads
-
-def create_nested_payload_zip(payload_json_path, attachments_path, payload_external_id, dir_name, generated_dir):
-    # Step 1: Create the inner zip named after the directory
-    inner_zip_path = os.path.join(generated_dir, f"{dir_name}.zip")
-    with zipfile.ZipFile(inner_zip_path, 'w') as zf:
-        # Add payload.json with comment "Payload"
-        zinfo = zipfile.ZipInfo("payload.json")
-        zinfo.comment = b"Payload"
-        with open(payload_json_path, "rb") as f:
-            zf.writestr(zinfo, f.read())
-        # If attachments.zip exists, add it with comment "EncryptedAttachment"
-        if attachments_path:
-            zinfo = zipfile.ZipInfo("attachments.zip")
-            zinfo.comment = b"EncryptedAttachment"
-            with open(attachments_path, "rb") as f:
-                zf.writestr(zinfo, f.read())
-    # Step 2: Create the outer zip named after payload_external_id
-    outer_zip_path = os.path.join(generated_dir, f"{payload_external_id}.zip")
-    with zipfile.ZipFile(outer_zip_path, 'w') as zf:
-        zinfo = zipfile.ZipInfo(f"{dir_name}.zip")
-        zinfo.comment = b"PayloadArchive"
-        with open(inner_zip_path, "rb") as f:
-            zf.writestr(zinfo, f.read())
-    # Remove the inner zip after nesting to clean up
-    os.remove(inner_zip_path)
-    print(f"Created {outer_zip_path}")
-
-def build_manifest_payload(info, tags_lookup):
-    result = {}
-    result['payload_external_id'] = info.get('payload_external_id', '')
-    result['payload_name'] = info.get('payload_name', '')
-    result['payload_description'] = info.get('payload_description', '')
-    result['payload_platforms'] = info.get('payload_platforms', [])
-
-    # Simplified attack patterns
-    attack_patterns = []
-    for ap in info.get('payload_attack_patterns', []):
-        if isinstance(ap, dict):
-            attack_patterns.append({
-                "attack_pattern_external_id": ap.get("attack_pattern_external_id"),
-                "attack_pattern_name": ap.get("attack_pattern_name")
-            })
-        elif isinstance(ap, str):  # fallback: string id
-            attack_patterns.append({
-                "attack_pattern_external_id": ap,
-                "attack_pattern_name": ""
-            })
-    result['payload_attack_patterns'] = attack_patterns
-
-    # Simplified tags: map tag IDs to names using tags_lookup
-    tag_ids = info.get('payload_tags', [])
-    tag_names = [tags_lookup.get(tag_id) for tag_id in tag_ids if tag_id in tags_lookup]
-    result['payload_tags'] = tag_names
-
-    return result
-
-def merge_json_files(payloads, generated_dir):
-    manifest_list = []
-    for payload in payloads:
-        data = fix_and_load_json(payload['payload_json'])
+def merge_json_files(json_files, parent_dir):
+    merged = []
+    for file in json_files:
+        data = fix_and_load_json(file, parent_dir)
         if data is None:
             continue
-        info = data.get('payload_information', {})
-        tags_list = data.get('payload_tags', [])
-        tags_lookup = {tag['tag_id']: tag['tag_name'] for tag in tags_list if 'tag_id' in tag and 'tag_name' in tag}
-        payload_external_id = info.get('payload_external_id')
-        # create nested zip only if payload_external_id present
-        if payload_external_id:
-            create_nested_payload_zip(
-                payload['payload_json'],
-                payload['attachments'],
-                payload_external_id,
-                payload['dir_name'],
-                generated_dir
-            )
-        # Add simplified info to manifest, with tag name extraction
-        manifest_list.append(build_manifest_payload(info, tags_lookup))
-    return manifest_list
+        if isinstance(data, list):
+            merged.extend(data)
+        else:
+            merged.append(data)
+    return merged
 
 if __name__ == '__main__':
     parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
     output_path = os.path.join(parent_dir, 'manifest.json')
-    generated_dir = ensure_generated_dir(parent_dir)
 
-    payloads = find_payload_jsons(parent_dir)
-
-    print(f"Found {len(payloads)} payload.json files.")
-    manifest_data = merge_json_files(payloads, generated_dir)
+    json_files = find_json_files(parent_dir, output_path)
+    print(f"Found {len(json_files)} JSON files.")
+    merged_data = merge_json_files(json_files, parent_dir)
 
     with open(output_path, 'w', encoding='utf-8') as out:
-        json.dump(manifest_data, out, indent=2, ensure_ascii=False)
-    print(f"Merged manifest saved to {output_path}")
+        json.dump(merged_data, out, indent=2, ensure_ascii=False)
+    print(f"Merged JSON saved to {output_path}")
