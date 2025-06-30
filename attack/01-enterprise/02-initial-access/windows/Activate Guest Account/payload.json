@@ -1,5 +1,6 @@
 {
   "export_version": 1,
+  "native_collection": true,
   "payload_information": {
     "payload_type": "Command",
     "payload_name": "Activate Guest Account",
