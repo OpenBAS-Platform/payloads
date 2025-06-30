@@ -50,8 +50,17 @@ $ python3 scripts/generate_manifest.py
 
 You can just select the payload folder and create a ZIP file.
 
+![Create Archive](./.github/img/create-archive.png "Create Archive")
 
+### 2. Import the payload in OpenBAS
 
+Then, just import the payload in OpenBAS.
+
+![Import Payload](./.github/img/import-payload.png "Import Payload")
+
+### 3. Test the payload
+
+Then, test the payload and validate it works before marging the pull request.
 
 ## About
 
