@@ -24,6 +24,10 @@
     "payload_prerequisites": [],
     "payload_external_id": "ac0de8fe-a821-499c-ba22-591bbe84b06f",
     "payload_source": "FILIGRAN",
+    "payload_expectations": [
+      "PREVENTION",
+      "DETECTION"
+    ],
     "payload_status": "VERIFIED",
     "payload_execution_arch": "ALL_ARCHITECTURES",
     "payload_tags": [],
