@@ -1,46 +1,52 @@
 {
-  "export_version" : 1,
+  "export_version": 1,
   "native_collection": true,
-  "payload_information" : {
-    "payload_id" : "eade458c-938e-4b32-b6db-7ce9cec57e4a",
-    "payload_type" : "Command",
-    "payload_name" : "Download Macro-Enabled Phishing Attachment",
-    "payload_description" : "This test downloads a macro enabled document, simulating an end user clicking a phishing link to download the file.\nThe file \"PhishingAttachment.xlsm\" is downloaded to the %temp% directory.\n",
-    "payload_platforms" : [ "Windows" ],
-    "payload_attack_patterns" : [ {
-      "attack_pattern_id" : "c57b569b-3e99-4b0a-b9e2-51897e691876",
-      "attack_pattern_name" : "Spearphishing Attachment",
-      "attack_pattern_description" : "Adversaries may send spearphishing emails with a malicious attachment in an attempt to gain access to victim systems. Spearphishing attachment is a specific variant of spearphishing. Spearphishing attachment is different from other forms of spearphishing in that it employs the use of malware attached to an email. All forms of spearphishing are electronically delivered social engineering targeted at a specific individual, company, or industry. In this scenario, adversaries attach a file to the spearphishing email and usually rely upon [User Execution](https://attack.mitre.org/techniques/T1204) to gain execution.(Citation: Unit 42 DarkHydrus July 2018) Spearphishing may also involve social engineering techniques, such as posing as a trusted source.\n\nThere are many options for the attachment such as Microsoft Office documents, executables, PDFs, or archived files. Upon opening the attachment (and potentially clicking past protections), the adversary's payload exploits a vulnerability or directly executes on the user's system. The text of the spearphishing email usually tries to give a plausible reason why the file should be opened, and may explain how to bypass system protections in order to do so. The email may also contain instructions on how to decrypt an attachment, such as a zip file password, in order to evade email boundary defenses. Adversaries frequently manipulate file extensions and icons in order to make attached executables appear to be document files, or files exploiting one application appear to be a file for a different one. ",
-      "attack_pattern_external_id" : "T1566.001",
-      "attack_pattern_kill_chain_phases" : null
-    } ],
-    "payload_cleanup_executor" : "psh",
-    "payload_cleanup_command" : "Remove-Item $env:TEMP\\PhishingAttachment.xlsm -ErrorAction Ignore\n",
-    "payload_elevation_required" : false,
-    "payload_arguments" : [ ],
-    "payload_prerequisites" : [ ],
-    "payload_external_id" : null,
-    "payload_source" : "MANUAL",
-    "payload_expectations" : [ "PREVENTION", "DETECTION" ],
-    "payload_status" : "UNVERIFIED",
-    "payload_execution_arch" : "ALL_ARCHITECTURES",
-    "payload_collector" : null,
-    "payload_detection_remediations" : [ ],
-    "payload_tags" : [ ],
-    "payload_output_parsers" : [ ],
-    "payload_created_at" : "2025-06-20T09:48:40.124609Z",
-    "payload_updated_at" : "2025-07-30T05:40:44.512254Z",
-    "command_executor" : "psh",
-    "command_content" : "$url = 'https://github.com/redcanaryco/atomic-red-team/raw/master/atomics/T1566.001/bin/PhishingAttachment.xlsm'\n[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12\nInvoke-WebRequest -Uri $url -OutFile $env:TEMP\\PhishingAttachment.xlsm\n",
-    "payload_collector_type" : null
+  "payload_information": {
+    "payload_type": "Command",
+    "payload_name": "Download Macro-Enabled Phishing Attachment",
+    "payload_description": "This test downloads a macro enabled document, simulating an end user clicking a phishing link to download the file.\nThe file \"PhishingAttachment.xlsm\" is downloaded to the %temp% directory.\n",
+    "payload_platforms": [
+      "Windows"
+    ],
+    "payload_attack_patterns": [
+      {
+        "attack_pattern_id": "c57b569b-3e99-4b0a-b9e2-51897e691876",
+        "attack_pattern_name": "Spearphishing Attachment",
+        "attack_pattern_description": "Adversaries may send spearphishing emails with a malicious attachment in an attempt to gain access to victim systems. Spearphishing attachment is a specific variant of spearphishing. Spearphishing attachment is different from other forms of spearphishing in that it employs the use of malware attached to an email. All forms of spearphishing are electronically delivered social engineering targeted at a specific individual, company, or industry. In this scenario, adversaries attach a file to the spearphishing email and usually rely upon [User Execution](https://attack.mitre.org/techniques/T1204) to gain execution.(Citation: Unit 42 DarkHydrus July 2018) Spearphishing may also involve social engineering techniques, such as posing as a trusted source.\n\nThere are many options for the attachment such as Microsoft Office documents, executables, PDFs, or archived files. Upon opening the attachment (and potentially clicking past protections), the adversary's payload exploits a vulnerability or directly executes on the user's system. The text of the spearphishing email usually tries to give a plausible reason why the file should be opened, and may explain how to bypass system protections in order to do so. The email may also contain instructions on how to decrypt an attachment, such as a zip file password, in order to evade email boundary defenses. Adversaries frequently manipulate file extensions and icons in order to make attached executables appear to be document files, or files exploiting one application appear to be a file for a different one. ",
+        "attack_pattern_external_id": "T1566.001",
+        "attack_pattern_kill_chain_phases": null
+      }
+    ],
+    "payload_cleanup_executor": "psh",
+    "payload_cleanup_command": "Remove-Item $env:TEMP\\PhishingAttachment.xlsm -ErrorAction Ignore\n",
+    "payload_elevation_required": false,
+    "payload_arguments": [],
+    "payload_prerequisites": [],
+    "payload_external_id": "eade458c-938e-4b32-b6db-7ce9cec57e4a",
+    "payload_source": "FILIGRAN",
+    "payload_expectations": [
+      "PREVENTION",
+      "DETECTION"
+    ],
+    "payload_status": "VERIFIED",
+    "payload_execution_arch": "ALL_ARCHITECTURES",
+    "payload_detection_remediations": [],
+    "payload_tags": [],
+    "payload_output_parsers": [],
+    "payload_created_at": "2025-06-20T09:48:40.124609Z",
+    "payload_updated_at": "2025-07-30T05:40:44.512254Z",
+    "command_executor": "psh",
+    "command_content": "$url = 'https://github.com/OpenBAS-Platform/payloads/raw/refs/heads/main/attack/01-enterprise/02-initial-access/windows/Download%20Macro-Enabled%20Phishing%20Attachment/bin/PhishingAttachment.xlsm'\n[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12\nInvoke-WebRequest -Uri $url -OutFile $env:TEMP\\PhishingAttachment.xlsm\n"
   },
-  "payload_tags" : [ ],
-  "payload_attack_patterns" : [ {
-    "attack_pattern_id" : "c57b569b-3e99-4b0a-b9e2-51897e691876",
-    "attack_pattern_name" : "Spearphishing Attachment",
-    "attack_pattern_description" : "Adversaries may send spearphishing emails with a malicious attachment in an attempt to gain access to victim systems. Spearphishing attachment is a specific variant of spearphishing. Spearphishing attachment is different from other forms of spearphishing in that it employs the use of malware attached to an email. All forms of spearphishing are electronically delivered social engineering targeted at a specific individual, company, or industry. In this scenario, adversaries attach a file to the spearphishing email and usually rely upon [User Execution](https://attack.mitre.org/techniques/T1204) to gain execution.(Citation: Unit 42 DarkHydrus July 2018) Spearphishing may also involve social engineering techniques, such as posing as a trusted source.\n\nThere are many options for the attachment such as Microsoft Office documents, executables, PDFs, or archived files. Upon opening the attachment (and potentially clicking past protections), the adversary's payload exploits a vulnerability or directly executes on the user's system. The text of the spearphishing email usually tries to give a plausible reason why the file should be opened, and may explain how to bypass system protections in order to do so. The email may also contain instructions on how to decrypt an attachment, such as a zip file password, in order to evade email boundary defenses. Adversaries frequently manipulate file extensions and icons in order to make attached executables appear to be document files, or files exploiting one application appear to be a file for a different one. ",
-    "attack_pattern_external_id" : "T1566.001",
-    "attack_pattern_kill_chain_phases" : null
-  } ],
-  "payload_arguments_documents" : [ ]
+  "payload_tags": [],
+  "payload_attack_patterns": [
+    {
+      "attack_pattern_id": "c57b569b-3e99-4b0a-b9e2-51897e691876",
+      "attack_pattern_name": "Spearphishing Attachment",
+      "attack_pattern_description": "Adversaries may send spearphishing emails with a malicious attachment in an attempt to gain access to victim systems. Spearphishing attachment is a specific variant of spearphishing. Spearphishing attachment is different from other forms of spearphishing in that it employs the use of malware attached to an email. All forms of spearphishing are electronically delivered social engineering targeted at a specific individual, company, or industry. In this scenario, adversaries attach a file to the spearphishing email and usually rely upon [User Execution](https://attack.mitre.org/techniques/T1204) to gain execution.(Citation: Unit 42 DarkHydrus July 2018) Spearphishing may also involve social engineering techniques, such as posing as a trusted source.\n\nThere are many options for the attachment such as Microsoft Office documents, executables, PDFs, or archived files. Upon opening the attachment (and potentially clicking past protections), the adversary's payload exploits a vulnerability or directly executes on the user's system. The text of the spearphishing email usually tries to give a plausible reason why the file should be opened, and may explain how to bypass system protections in order to do so. The email may also contain instructions on how to decrypt an attachment, such as a zip file password, in order to evade email boundary defenses. Adversaries frequently manipulate file extensions and icons in order to make attached executables appear to be document files, or files exploiting one application appear to be a file for a different one. ",
+      "attack_pattern_external_id": "T1566.001",
+      "attack_pattern_kill_chain_phases": null
+    }
+  ],
+  "payload_arguments_documents": []
 }
