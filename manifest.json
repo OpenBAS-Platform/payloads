@@ -327,7 +327,10 @@
       "payload_prerequisites": [],
       "payload_external_id": "695eed40-e949-40e5-b306-b4031e4154bd",
       "payload_source": "FILIGRAN",
-      "payload_expectations": null,
+      "payload_expectations": [
+        "PREVENTION",
+        "DETECTION"
+      ],
       "payload_status": "VERIFIED",
       "payload_execution_arch": "ALL_ARCHITECTURES",
       "payload_detection_remediations": [],
@@ -376,7 +379,10 @@
       "payload_prerequisites": [],
       "payload_external_id": "728eca7b-0444-4f6f-ac36-437e3d751dc0",
       "payload_source": "FILIGRAN",
-      "payload_expectations": null,
+      "payload_expectations": [
+        "PREVENTION",
+        "DETECTION"
+      ],
       "payload_status": "VERIFIED",
       "payload_execution_arch": "ALL_ARCHITECTURES",
       "payload_detection_remediations": [],
@@ -475,7 +481,10 @@
       "payload_prerequisites": [],
       "payload_external_id": "13f09b91-c953-438e-845b-b585e51cac9b",
       "payload_source": "FILIGRAN",
-      "payload_expectations": null,
+      "payload_expectations": [
+        "PREVENTION",
+        "DETECTION"
+      ],
       "payload_status": "VERIFIED",
       "payload_execution_arch": "ALL_ARCHITECTURES",
       "payload_detection_remediations": [],
@@ -531,7 +540,10 @@
       ],
       "payload_external_id": "78e95057-d429-4e66-8f82-0f060c1ac96f",
       "payload_source": "FILIGRAN",
-      "payload_expectations": null,
+      "payload_expectations": [
+        "PREVENTION",
+        "DETECTION"
+      ],
       "payload_status": "VERIFIED",
       "payload_execution_arch": "ALL_ARCHITECTURES",
       "payload_detection_remediations": [],
@@ -616,7 +628,10 @@
       ],
       "payload_external_id": "cab413d8-9e4a-4b8d-9b84-c985bd73a442",
       "payload_source": "FILIGRAN",
-      "payload_expectations": null,
+      "payload_expectations": [
+        "PREVENTION",
+        "DETECTION"
+      ],
       "payload_status": "VERIFIED",
       "payload_execution_arch": "ALL_ARCHITECTURES",
       "payload_detection_remediations": [],
